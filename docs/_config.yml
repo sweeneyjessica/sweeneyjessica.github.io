@@ -22,12 +22,12 @@ title: Jessica Sweeney
 email: js20@uw.edu
 description: >- # this means to ignore newlines until "baseurl:"
   I'm a Computational Linguistics Masters' Student at
-  the University of Washington. I'm curious about what goes on
-  inside the black box of language models and how it compares to
-  what goes on inside the black box of human brains.
+  the University of Washington. I'm interested in language data
+  and how we can leverage it for training and evaluating large
+  language models.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
-twitter_username: sweeneycommaj
+#twitter_username: sweeneycommaj
 github_username:  sweeneyjessica
 
 # Build settings
