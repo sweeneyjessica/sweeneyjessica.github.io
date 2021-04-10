@@ -1,8 +1,8 @@
 ---
 layout: post
-title:  "Language Model State-Tracking Error Analysis Within the Domain of Chess"
+title: "That's Against The Rules: Analyzing GPT-2's Chess Mistakes"
 date: 2021-04-10 04:00:00 -0000
-categories: linguistics, chess, gpt-2 
+categories: linguistics
 ---
 
 This is the write-up for my final project in CSE 573 (Artificial Intelligence) at the University of Washington last quarter. It's a bit dense because it's intended as a paper, not a blog post, but I think the pictures are fun to look at, so I'm putting it up. I really love the paper this project was based on (you can find it [here](https://arxiv.org/abs/2102.13249)), because I love interpretability *and* chess, and I might do some extensions to this in the future.   
