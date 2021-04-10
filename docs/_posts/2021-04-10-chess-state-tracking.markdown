@@ -44,7 +44,7 @@ Figure 1 below shows an instance of overfitting, where the model has high confid
 
 It’s clear from the difference between the means and medians that some examples are more affected by the statistical heuristics than others. In cases where the frequency of the bigram is low or zero, frequency is likely not the reason for the mistake. To further narrow down possible errors in state-tracking, I performed two more probing tasks, discussed below.
 
-![image](./chesspics/Fig1.png)
+![image](/docs/assets/chess_1.png)
 
 ### Path Obstruction
 
@@ -52,7 +52,7 @@ When looking at any given path obstruction error, it’s not clear whether the m
 
 There are a few issues with this approach. One is that sometimes the piece causing the obstruction is of the opposite color (say, black) to the piece trying to move through it (which is say, white). If we try to elicit a prediction for the obstructing piece, the model will think that it is still white’s turn, and this might introduce some uncertainty to the model’s state tracking. In fact, in cases like Figure 2 below, the black queen tries to capture her own pawn and rook because it is white’s turn based on the number of moves that have been made on the board. Since the moves are all legal paths for a queen on an empty board, it still seems to indicate that the model knows the identity of the piece on that square, but the mismatch in turn colors is a potential confounder.
 
-![image](./chesspics/Fig2.png)
+![image](/docs/assets/chess_2.png)
 
 Another issue is that the model will still give predictions for empty squares, so it’s possible that the model’s internal state does not know a piece is on that square, but since we’re probing it, it makes guesses. With this probing task alone, it isn’t possible to tell whether the model is only guessing moves that happen to suit the piece that is actually on that square. However, when you query the model for moves for a square that is empty on the true board, it will usually provide random moves that could not all come from the same piece, or it will mimic moves from the closest piece (which in this case is a rook). Because of this, we can be reasonably sure that if the model’s top 5 moves are all legal queen moves, the model knows the identity of the piece on that square is a queen.
 
@@ -60,7 +60,7 @@ Another issue is that the model will still give predictions for empty squares, s
 
 Out of the ten path obstruction errors, the model was able to find at least 1 legal move for nine of the obstructing pieces. When the obstructing piece was not a pawn, on average 86.6\% of the top 5 moves were legal for that piece type. This indicates that the model likely understands the type of piece that is on that square, and therefore the path obstruction error was made in spite of that state knowledge. When the obstructing piece was a pawn, often there were no legal moves for that pawn (since they are only able to move forward one square or capture diagonally, which are not possible moves in many positions). In these cases, I considered any of the three squares directly in front of the pawn a legal move, even if they were not legal from that board position. Two of the pawn errors found one of these legal moves in their top 5 predictions, and one did not find any (shown in Figure 3 below). The decrease in accuracy on pawn move suggestions seems to indicate that the model’s board state might lose track of pawns more easily than the major pieces.
 
-![image](./chesspics/Fig3.png)
+![image](/docs/assets/chess_3.png)
 
 ### Pseudo-Legal
 
@@ -76,11 +76,11 @@ An issue with this approach is that the model has never seen a king being captur
 
 Out of 12 pseudo-legal move errors, when the model is allowed to make those errors and then make a move for the other side, it only captures the king in 3 of those board states. In 7 out of the other 9 boards, it leaves the king in check, but makes a different capture or moves to an empty square. In 2 out of those 9 boards, it moves the checking piece away from the king. The model’s predictions on these examples seems to indicate that it doesn’t fully understand the mechanics of check, why it is good for one side and not the other, and what the winning conditions of the game are. Some examples of these boards are shown in Figure 4-6 below.
 
-![image](./chesspics/Fig4.png)
+![image](/docs/assets/chess_4.png)
 
-![image](./chesspics/Fig5.png)
+![image](/docs/assets/chess_5.png)
 
-![image](./chesspics/Fig6.png)
+![image](/docs/assets/chess_6.png)
 
 ## Discussion
 
