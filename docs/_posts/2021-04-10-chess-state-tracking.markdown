@@ -12,7 +12,7 @@ This is the write-up for my final project in CSE 573 (Artificial Intelligence) a
 
 One of the functions of language is communicating information about the state of the world, and humans who use language are able to track world state throughout a single utterance as well as the course of a conversation. Language models are often able to generate language that seems, on the surface, to reflect state-tracking, but because of the black-box nature of these models, it is difficult to know what kind of information they are keeping track of, and how they are representing it.
 
-A recent paper, called Learning Chess Blindfolded (Toshniwal et al. 2021), proposes to study questions of state tracking by reducing the problem to the domain of chess. They train a model with GPT-2 architecture on data from 100,000 chess games played by humans, where each move is notated by a token representing its start square and end square on the board. They evaluate the model on 1000 games and find that, given the start square of the last move, the model predicts a legal ending square in 97.7\% of those games, leaving 23 games where the model predicted an illegal move.
+A recent paper, called Learning Chess Blindfolded (Toshniwal et al. 2021), proposes to study questions of state tracking by reducing the problem to the domain of chess. They train a model with GPT-2 architecture on data from 100,000 chess games played by humans, where each move is notated by a token representing its start square and end square on the board. They evaluate the model on 1000 games and find that, given the start square of the last move, the model predicts a legal ending square in 97.7% of those games, leaving 23 games where the model predicted an illegal move.
 
 Those errors are categorized by Toshniwal et al. (2021) into three categories, two of which I analyze in this paper: Pseudo-legal and Path Obstruction. Pseudo-legal errors are moves that either leave or put the king in check. Path obstruction errors are moves where the model predicts an ending square that is unreachable due to intervening pieces. Their categorization is exhaustive of the types of errors, but they don’t perform any further probing tasks to determine why the models make these specific mistakes, i.e. what information the model is missing from its state representation.
 
@@ -31,14 +31,14 @@ In order to determine the extent to which the model was overfitting to simple to
 For each of the 22 games, I calculated the training set probability of the predicted square given the previous move and the starting square of the final move. As an example from one of the errors by the model, when it was given a game prefix that ended in `…a8a1 e1`, the model predicted `a1`. To find the probability of the predicted token following the previous tokens, I divided the count of `a8a1 e1a1` in the training data by the count of `a8a1 e1` in the training data. 
 
 #### Analysis
-78\% of the time that the model saw `a8e8 e1` in the training data, `a1` was the following token. For this particular example, this behavior strongly points towards overfitting on the model’s part, since it seems to prefer to make moves that it saw frequently, rather than moves that make sense in the context of the board. 
+78% of the time that the model saw `a8e8 e1` in the training data, `a1` was the following token. For this particular example, this behavior strongly points towards overfitting on the model’s part, since it seems to prefer to make moves that it saw frequently, rather than moves that make sense in the context of the board. 
  
 The percentages in the table below represent how often the model-predicted token followed the move-and-a-half prefix in the training data, for both types of errors individually and together.
 
 |        | Path Obstruction | Pseudo-Legal | All    |
 |--------|------------------|--------------|--------|
-| Mean   | 13.2\%           | 12.3\%       | 12.7\% |
-| Median | 4.5\%            | 3.7\%        | 3.7\%  |
+| Mean   | 13.2%           | 12.3%       | 12.7% |
+| Median | 4.5%            | 3.7%        | 3.7%  |
 
 Figure 1 below shows an instance of overfitting, where the model has high confidence in the move `e1a1` because of high training set frequency and does not consider the intervening Queen.
 
@@ -58,7 +58,7 @@ Another issue is that the model will still give predictions for empty squares, s
 
 #### Analysis
 
-Out of the ten path obstruction errors, the model was able to find at least 1 legal move for nine of the obstructing pieces. When the obstructing piece was not a pawn, on average 86.6\% of the top 5 moves were legal for that piece type. This indicates that the model likely understands the type of piece that is on that square, and therefore the path obstruction error was made in spite of that state knowledge. When the obstructing piece was a pawn, often there were no legal moves for that pawn (since they are only able to move forward one square or capture diagonally, which are not possible moves in many positions). In these cases, I considered any of the three squares directly in front of the pawn a legal move, even if they were not legal from that board position. Two of the pawn errors found one of these legal moves in their top 5 predictions, and one did not find any (shown in Figure 3 below). The decrease in accuracy on pawn move suggestions seems to indicate that the model’s board state might lose track of pawns more easily than the major pieces.
+Out of the ten path obstruction errors, the model was able to find at least 1 legal move for nine of the obstructing pieces. When the obstructing piece was not a pawn, on average 86.6% of the top 5 moves were legal for that piece type. This indicates that the model likely understands the type of piece that is on that square, and therefore the path obstruction error was made in spite of that state knowledge. When the obstructing piece was a pawn, often there were no legal moves for that pawn (since they are only able to move forward one square or capture diagonally, which are not possible moves in many positions). In these cases, I considered any of the three squares directly in front of the pawn a legal move, even if they were not legal from that board position. Two of the pawn errors found one of these legal moves in their top 5 predictions, and one did not find any (shown in Figure 3 below). The decrease in accuracy on pawn move suggestions seems to indicate that the model’s board state might lose track of pawns more easily than the major pieces.
 
 ![image](/docs/assets/chess_3.png)
 
@@ -96,5 +96,5 @@ The potential relationships between this project and GPT-2 as trained on languag
 
 ### Reference~~s~~
 
-Toshniwal, S., Wiseman, S., Livescu, K., \& Gimpel, K. (2021). Learning Chess Blindfolded: Evaluating Language Models on State Tracking.
+Toshniwal, S., Wiseman, S., Livescu, K., & Gimpel, K. (2021). Learning Chess Blindfolded: Evaluating Language Models on State Tracking.
  
