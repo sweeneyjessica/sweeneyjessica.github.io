@@ -1,6 +1,7 @@
 ---
 layout: post
 title:  "Language Model State-Tracking Error Analysis Within the Domain of Chess"
+date: 2021-04-10 04:00:00 -0000
 categories: linguistics, chess, gpt-2 
 ---
 
